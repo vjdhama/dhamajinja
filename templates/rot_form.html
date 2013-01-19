@@ -1,0 +1,140 @@
+<html>
+<head>
+<title>Caeser Cipher</title>
+<style>
+
+#body{
+    background-color:  #3b5999;
+    text-align : center;
+}
+
+#main{
+    
+}
+
+@font-face{
+    font-family : Metropolis;
+    src : url("Metropolis.otf");
+}
+
+#header{
+    color : white ;
+    text-align : center;
+    font-family : Verdana;
+    text-shadow: 1px 1px 2px #000;
+    font-size : 40px;   
+}
+
+#text{
+    font-family : monospace;
+    font-size : 16px;
+    color:  #3b5999;
+    margin : 10px;
+    border-radius : 5px;
+    background-color : #CAD2E3;    
+}
+
+#lab{
+    color : white ;
+    font-family : HELVETICA;
+    font-size : 16px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+input {
+    font-family: "Helvetica", Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    text-decoration: none;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    padding: 8px 19px;
+}
+    input:before, input:after {
+        height: 29px;
+        width: 1px;
+        content: '';
+        position: absolute;
+        margin-top: -5px;
+    }
+    input:before { margin-right: 19px; }
+    input:after { margin-left: 19px; }
+    @-moz-document url-prefix() { input:before { margin-left: -20px; } }
+    input:active:before, input:active:after { display: none; }
+
+.white {
+    color: #4A4A4A;
+    text-shadow: 0 1px 0 white;
+    background-color: #F1F1F1;
+    background-image: -moz-linear-gradient(100% 100% 90deg, #E0E0E0, #F6F6F6);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F6F6F6), to(#E0E0E0));
+    border: 1px solid #B2B2B2;
+    border-top: 1px solid #C9C9C9;
+    border-bottom: 1px solid #8F8F8F;
+    -webkit-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+    -moz-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+    box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+}
+    .white:after {
+        background-image: -moz-linear-gradient(100% 100% 90deg, #8F8F8F, #C9C9C9);
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C9C9C9), to(#8F8F8F));
+    }
+    .white:before {
+        background-image: -moz-linear-gradient(100% 100% 90deg, #8F8F8F, #C9C9C9);
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C9C9C9), to(#8F8F8F));
+    }
+    .white:hover {
+        -webkit-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        -moz-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        color: black;
+    }
+    .white:active {
+        -webkit-box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        -moz-box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        position: relative;
+        top: 2px;
+    }
+    .white.pressin:active {
+        background-image: -moz-linear-gradient(100% 100% 90deg, #F6F6F6, #E0E0E0);
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E0E0E0), to(#F6F6F6));
+    }
+ 
+ 
+
+</style>
+</head>
+<body id = "body">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div>
+<div id = "main">
+<br>
+<h1 id = "header">&#123;&#123; DECIPHER &#125;&#125;</h1>
+<br><br>
+</div>
+<form method = POST>
+    <label id = "lab"><b>CAESAR CIPHER (ROT 13) DECODER</b></label>
+    <br><br>
+    <textarea id = "text" name = "t" rows = 5 cols = 50 autofocus placeholder = " Enter Cipher to Decode">{{ data }}</textarea>
+    <br>
+    <input class="white" type = "submit" value = "Decode">
+    <!--<a class="white">Decode</a>-->                                          
+    </input>
+</form>
+<div class="fb-follow" data-href="https://www.facebook.com/dhamavijays" data-show-faces="true" data-font="lucida grande" data-width="450"></div>
+<a href="https://twitter.com/twitterapi" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow @twitterapi</a>
+<!-- Facebook Badge START 
+<a href="http://www.facebook.com/dhamavijays" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;" title="Vijay Dhama">Vijay Dhama</a><br/><a href="http://www.facebook.com/dhamavijays" target="_TOP" title="Vijay Dhama"><img src="http://badge.facebook.com/badge/1001303112.2637.1047862973.png" style="border: 0px;" /></a><br/><a href="http://www.facebook.com/badges/" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;" title="Make your own badge!">Create Your Badge</a>
+<!-- Facebook Badge END -->
+</div>
+</body>
+</html>
