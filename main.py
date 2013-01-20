@@ -23,16 +23,19 @@ jinja_environment = jinja2.Environment(autoescape=True,
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        #template_values = {
-        #    'name': 'SomeGuy',
-        #    'verb': 'extremely enjoy'
-        #}
+        template = jinja_environment.get_template('base.html')
+        self.response.out.write(template.render())
 
-        #template = jinja_environment.get_template('index.html')
-        #self.response.out.write(template.render(template_values))
-
-        self.redirect('/Rot13')
-
+    def post(self):    
+        r = self.request.get('rot')
+        a = self.request.get('ascii')
+        #self.response.out.write("r = " + r + "AND a = " + a)
+        
+        if r == 'GO':
+            self.redirect('/Rot13')
+        elif a == 'GO':
+            self.redirect('/Ascii')
+            
 class RotHandler(webapp2.RequestHandler):
     def write(self,arg = ""):
         template_values = {
@@ -58,7 +61,6 @@ class RotHandler(webapp2.RequestHandler):
                 q += a
         return q
     
-    
     def get(self):
         self.write()
 
@@ -69,12 +71,21 @@ class RotHandler(webapp2.RequestHandler):
             self.write(ans)
         else:
             self.write()
-            
+
+
+
+class AsciiHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.out.write("Ascii Art!!")
+
+
+
 
 def escape_html(s):
         return cgi.escape(s,quote = True)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/Rot13',RotHandler)
+    ('/Rot13',RotHandler),
+    ('/Ascii',AsciiHandler)
 ], debug=True)
