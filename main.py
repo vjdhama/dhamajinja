@@ -17,6 +17,7 @@
 import os, cgi
 import webapp2
 import jinja2
+from google.appengine.ext import db
 
 jinja_environment = jinja2.Environment(autoescape=True,
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
@@ -29,13 +30,17 @@ class MainHandler(webapp2.RequestHandler):
     def post(self):    
         r = self.request.get('rot')
         a = self.request.get('ascii')
+        b = self.request.get('blog')
         #self.response.out.write("r = " + r + "AND a = " + a)
         
         if r == 'GO':
             self.redirect('/Rot13')
         elif a == 'GO':
             self.redirect('/Ascii')
-            
+        elif b == 'GO':
+            self.redirect('/Blog')
+
+        
 class RotHandler(webapp2.RequestHandler):
     def write(self,arg = ""):
         template_values = {
@@ -72,13 +77,50 @@ class RotHandler(webapp2.RequestHandler):
         else:
             self.write()
 
+class Art(db.Model):
+    title = db.StringProperty(required = True)
+    art = db.TextProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
 
 
 class AsciiHandler(webapp2.RequestHandler):
+    def write(self, *a, **kw):
+        self.response.out.write(*a, **kw)
+        
+    def render_str(self, template, **params):
+        t = jinja_environment.get_template(template)
+        return t.render(params)
+
+    def render(self, template, **kw):
+        self.write(self.render_str(template, **kw))
+
+    def render_front(self,title = "",art = "",error = ""):
+        arts = db.GqlQuery("SELECT * FROM Art "
+                           "ORDER BY created DESC")
+
+        self.render("ascii.html", title = title, art = art, error = error, arts = arts)
+    
     def get(self):
-        self.response.out.write("Ascii Art!!")
+        self.render_front()
+
+    def post(self):
+        title = self.request.get("title")
+        art = self.request.get("art")
+
+        if art and title:
+            a = Art(title = title , art = art)
+            a.put()
+
+            self.redirect("/Ascii")
+            #self.render_front()
+        else:
+            error = "We need both title and art"
+            self.render_front(title,art,error)
 
 
+class BlogHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.out.write("Blog")
 
 
 def escape_html(s):
@@ -87,5 +129,6 @@ def escape_html(s):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/Rot13',RotHandler),
-    ('/Ascii',AsciiHandler)
+    ('/Ascii',AsciiHandler),
+    ('/Blog',BlogHandler)
 ], debug=True)
