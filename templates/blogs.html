@@ -1,0 +1,36 @@
+<html>
+    <head>
+            
+    <head>
+    <style>
+    body{
+            color : white;
+            background-color:  #3b5999;
+            font-family : Helvetica, Arial, sans-serif;
+            width : 800px;
+            margin : 0 auto;
+            padding : 10px;
+        }
+    .main-title {
+            display: block;
+            text-align : center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            width = 800px;
+            margin-bottom: 30px;
+            text-decoration: none;
+        }
+    </style>
+    <body>
+        <a href="/blog" class = "main-title">
+            CS 253 Blog
+        </a>
+        {% for blog in blogs %}
+            <div class = "blog">
+                <div class = "blog-subject">{{blog.subject}}</div>
+                <pre class = "blog-content">{{blog.content}}</pre>
+            </div>
+        {% endfor %}
+    </body>
+</html>

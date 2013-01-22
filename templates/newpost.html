@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <title>New Post</title>
+    </head>
+    <style type = "text/css">
+        body{
+            color : white;
+            background-color:  #3b5999;
+            font-family : Helvetica, Arial, sans-serif;
+            width : 800px;
+            margin : 0 auto;
+            padding : 10px;
+        }
+        h1{
+            color : white;
+        }
+        .error{
+            color : red;
+        }
+        .main-title {
+            display: block;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            text-align: left;
+            width = 800px;
+            margin-bottom: 30px;
+            text-decoration: none;
+        }
+        label{
+            display: block;
+            font-size : 20px;
+        }
+        input[type=text]{
+            width : 400px;
+            font-size : 20px;
+            padding : 2px;
+        }
+        textarea{
+            width : 400px;
+            height : 200px;
+            font-size : 17px;
+            font-family : monospace;
+        }
+        input [type=submit]{
+            font-family: "Helvetica", Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 24px;
+            text-decoration: none;
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            padding: 8px 19px;
+        }
+        input:before, input:after {
+            height: 29px;
+            width: 1px;
+            content: '';
+            position: absolute;
+            margin-top: -5px;
+        }
+        input:before { margin-right: 19px; }
+        input:after { margin-left: 19px; }
+        @-moz-document url-prefix() { input:before { margin-left: -20px; } }
+        input:active:before, input:active:after { display: none; }
+
+        hr{
+            margin-top : 20px;    
+        }
+        .art + .art {
+            margin-top : 20px;
+        }
+        .art-title{
+            font-weight : bold;
+            font-size : 20px;
+        }
+        .art-body{
+            margin : 0;
+            font-size : 17px;
+        }
+        .white {
+            color: #4A4A4A;
+            text-shadow: 0 1px 0 white;
+            background-color: #F1F1F1;
+            background-image: -moz-linear-gradient(100% 100% 90deg, #E0E0E0, #F6F6F6);
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F6F6F6), to(#E0E0E0));
+            border: 1px solid #B2B2B2;
+            border-top: 1px solid #C9C9C9;
+            border-bottom: 1px solid #8F8F8F;
+            -webkit-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            -moz-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+        }
+        .white:after {
+            background-image: -moz-linear-gradient(100% 100% 90deg, #8F8F8F, #C9C9C9);
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C9C9C9), to(#8F8F8F));
+        }
+        .white:before {
+            background-image: -moz-linear-gradient(100% 100% 90deg, #8F8F8F, #C9C9C9);
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C9C9C9), to(#8F8F8F));
+        }
+        .white:hover {
+            -webkit-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            -moz-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            color: black;
+        }
+        .white:active {
+            -webkit-box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            -moz-box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
+            position: relative;
+            top: 2px;
+        }
+        .white.pressin:active {
+            background-image: -moz-linear-gradient(100% 100% 90deg, #F6F6F6, #E0E0E0);
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E0E0E0), to(#F6F6F6));
+        }
+ 
+    </style>
+    <body>
+        <a href="/blog/newpost" class = "main-title">
+            New Post
+        </a> 
+        <form method = "post">
+            <label>
+                <div>Subject</div>
+                <input type = "text" name = "subject" value = "{{subject}}">
+            </label>
+            <label>
+                <div>Content</div>
+                <textarea name = "content" value = "{{content}}"></textarea>
+            </label>
+            <div class = "error">{{error}}</div>
+            <input class="white" type = "submit" value = "Submit">
+        </form>
+    </body>
+</html>

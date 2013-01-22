@@ -34,11 +34,11 @@ class MainHandler(webapp2.RequestHandler):
         #self.response.out.write("r = " + r + "AND a = " + a)
         
         if r == 'GO':
-            self.redirect('/Rot13')
+            self.redirect('/rot13')
         elif a == 'GO':
-            self.redirect('/Ascii')
+            self.redirect('/ascii')
         elif b == 'GO':
-            self.redirect('/Blog')
+            self.redirect('/blog')
 
         
 class RotHandler(webapp2.RequestHandler):
@@ -111,7 +111,7 @@ class AsciiHandler(webapp2.RequestHandler):
             a = Art(title = title , art = art)
             a.put()
 
-            self.redirect("/Ascii")
+            self.redirect("/ascii")
             #self.render_front()
         else:
             error = "We need both title and art"
@@ -119,16 +119,67 @@ class AsciiHandler(webapp2.RequestHandler):
 
 
 class BlogHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.out.write("Blog")
+    def write(self, *a, **kw):
+        self.response.out.write(*a, **kw)
+        
+    def render_str(self, template, **params):
+        t = jinja_environment.get_template(template)
+        return t.render(params)
 
+    def render(self, template, **kw):
+        self.write(self.render_str(template, **kw))
+
+    def render_blog(self,title = "",art = "",error = ""):
+        blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
+
+        self.render("blogs.html", blogs = blogs)
+    
+    def get(self):
+        self.render_blog()
+
+class Blog(db.Model):
+    subject = db.StringProperty(required = True)
+    content = db.TextProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
+
+class PostHandler(webapp2.RequestHandler):
+    def write(self, *a, **kw):
+        self.response.out.write(*a, **kw)
+        
+    def render_str(self, template, **params):
+        t = jinja_environment.get_template(template)
+        return t.render(params)
+
+    def render(self, template, **kw):
+        self.write(self.render_str(template, **kw))
+    
+    def render_post(self,subject = "",content = "",error = ""):
+        self.render("newpost.html", subject = subject, content = content, error = error)    
+
+    def get(self):
+        self.render_post()
+
+    def post(self):
+        subject = self.request.get("subject")
+        content = self.request.get("content")
+
+        if subject and content:
+            b = Blog(subject = subject , content = content)
+            b.put()
+
+            self.redirect("/blog")
+            #self.render_front()
+        else:
+            error = "We need both title and art"
+            self.render_front(title,art,error)
 
 def escape_html(s):
         return cgi.escape(s,quote = True)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/Rot13',RotHandler),
-    ('/Ascii',AsciiHandler),
-    ('/Blog',BlogHandler)
+    ('/rot13',RotHandler),
+    ('/ascii',AsciiHandler),
+    ('/blog',BlogHandler),
+    ('/blog/newpost',PostHandler)
 ], debug=True)
