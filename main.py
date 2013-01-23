@@ -110,7 +110,8 @@ class AsciiHandler(webapp2.RequestHandler):
         if art and title:
             a = Art(title = title , art = art)
             a.put()
-
+            
+            
             self.redirect("/ascii")
             #self.render_front()
         else:
@@ -165,13 +166,29 @@ class PostHandler(webapp2.RequestHandler):
 
         if subject and content:
             b = Blog(subject = subject , content = content)
-            b.put()
-
-            self.redirect("/blog")
+            b_key = b.put()
+                        
+            self.redirect("/blog/%d" %b_key.id())
             #self.render_front()
         else:
             error = "We need both title and art"
-            self.render_front(title,art,error)
+            self.render_post(title,art,error)
+
+class SinglePost(webapp2.RequestHandler):
+    def write(self, *a, **kw):
+        self.response.out.write(*a, **kw)
+        
+    def render_str(self, template, **params):
+        t = jinja_environment.get_template(template)
+        return t.render(params)
+
+    def render(self, template, **kw):
+        self.write(self.render_str(template, **kw))
+
+    def get(self, blog_id):
+        s = Blog.get_by_id(int(blog_id))
+        
+        self.render("permalink.html", subject = s.subject ,  content = s.content)
 
 def escape_html(s):
         return cgi.escape(s,quote = True)
@@ -181,5 +198,6 @@ app = webapp2.WSGIApplication([
     ('/rot13',RotHandler),
     ('/ascii',AsciiHandler),
     ('/blog',BlogHandler),
-    ('/blog/newpost',PostHandler)
+    ('/blog/newpost',PostHandler),
+    ('/blog/([0-9]*)',SinglePost)
 ], debug=True)

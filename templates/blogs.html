@@ -21,15 +21,41 @@
             margin-bottom: 30px;
             text-decoration: none;
         }
+    .blog{
+        margin : 0 auto;
+        width : 800px;
+        margin-bottom : 30px; 
+    }
+    .blog-heading{
+        display: block;
+    }
+    .blog-title{
+        font-weight : bold;;
+        font-size : 20px;
+        width : 50%;
+    }
+    .blog-date{
+        width : 50%;
+    }
     </style>
     <body>
         <a href="/blog" class = "main-title">
             CS 253 Blog
         </a>
         {% for blog in blogs %}
-            <div class = "blog">
-                <div class = "blog-subject">{{blog.subject}}</div>
-                <pre class = "blog-content">{{blog.content}}</pre>
+            <div class="blog">
+                <div class="blog-heading">
+                    <div class="blog-title">
+                        {{ blog.subject }}
+                    </div>
+                    <div class="blog-date">
+                        {{ blog.created.strftime("%b %d, %Y")}}
+                    </div>
+                </div>
+                <hr>
+                <div class="blog-content">
+                    {{ blog.content }}
+                </div>
             </div>
         {% endfor %}
     </body>
