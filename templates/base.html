@@ -17,21 +17,18 @@
         margin-top : 50px;
     }
     .option{
-        display : block;
-        font-family : verdana;
-        font-size : 18px;
-        display : block;
-        text-align : center;
-        margin:0 auto;
+        width : 20%;
+        font-family : "Comic Sans MS", cursive, sans-serif;
+        margin : 0 auto;
         padding-top:50px;
+        font-size : 18px;
     }
-    #innerone{
-        width = 20%;
-        position: absolute;
-        margin-left : 400px;
+    .innerone{
+        width : 50%;
+        display : inline-block;     
     }
-    #innertwo{
-        margin-left : 200px;
+    .innertwo{
+        float : right;
     }
     .footer {
         background-color: white;
@@ -46,29 +43,43 @@
         left: 0px;   
         bottom: 0px;
     }
+    .btn{
+        background-color: hsl(44, 12%, 76%) !important;
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f6f5f3", endColorstr="#c9c5ba");
+        background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f5f3), to(#c9c5ba));
+        background-image: -moz-linear-gradient(top, #f6f5f3, #c9c5ba);
+        background-image: -ms-linear-gradient(top, #f6f5f3, #c9c5ba);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f5f3), color-stop(100%, #c9c5ba));
+        background-image: -webkit-linear-gradient(top, #f6f5f3, #c9c5ba);
+        background-image: -o-linear-gradient(top, #f6f5f3, #c9c5ba);
+        background-image: linear-gradient(#f6f5f3, #c9c5ba);
+        border-color: #c9c5ba #c9c5ba hsl(44, 12%, 71%);
+        color: #333 !important;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.33);
+        -webkit-font-smoothing: antialiased;
+    }
 </style>
 <body>
 <div class = "head">
     <h1>PROJECT JINJA</h1>
 </div>
-<div class = "option">
-    <form method = POST>
-        <div>
-        </div>
-        <div id = "innerone">
+
+<form method = POST>
+    <div class = "option">
+        <div class = "innerone">
             <label>ROT 13</label><br>
             <label>ASCII ART</label><br>
             <label>BLOG</label><br> 
         </div>
-        <div>
+        <div class = "innertwo">
+            <input class = "btn" type = "submit" value = "  GO  " name = 'rot'><br>
+            <input class = "btn" type = "submit" value = "  GO  " name = 'ascii'><br>
+            <input class = "btn" type = "submit" value = "  GO  " name = 'blog'><br>       
         </div>
-        <div id = "innertwo">
-            <input type = "submit" value = "GO" name = 'rot'><br>
-            <input type = "submit" value = "GO" name = 'ascii'><br>
-            <input type = "submit" value = "GO" name = 'blog'><br>       
-        </div>
-    </form>
-</div>
+    </div>
+</form>
+
 <a href="https://github.com/vjdhama"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
 </body>
 <footer class = "footer">

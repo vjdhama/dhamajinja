@@ -1,13 +1,65 @@
 <html>
     <head>
     </head>
+    <style>
+    body{
+        color : white;
+        background-color:  #3b5999;
+        font-family : Helvetica, Arial, sans-serif;
+        width : 800px;
+        margin : 0 auto;
+        padding : 10px;
+    }
+    .main-title {
+        display: block;
+        text-align : center;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        width = 800px;
+        margin-bottom: 30px;
+        text-decoration: none;
+    }
+    .blog{
+        margin : 0 auto;
+        width : 800px;
+        margin-bottom : 40px; 
+    }
+    .blog-heading{
+        width : 100%;
+        margin : 0 auto;
+    }
+    .blog-title{
+        width : 80%;
+        font-weight : bold;;
+        font-size : 20px;
+        display : inline-block;
+    }
+    .blog-date{
+        float : right;
+        color : #AEAEAE;
+        font-size : 14px;
+    }
+    </style>
     <body>
         <a href="/blog" class = "main-title">
             CS 253 Blog
         </a>
-        <div class = "single">
-            <div class = "blog-subject">{{subject}}</div>
-            <pre class = "blog-content">{{content}}</pre>
-        </div>    
+
+            <div class = "blog">
+                <div class = "blog-heading">
+                    <div class = "blog-title">
+                        {{subject}}
+                    </div>
+                    <div class="blog-date">
+                        {{created.strftime("%b %d, %Y")}}
+                    </div>
+                </div>
+                <hr>
+                <div class = "blog-content">
+                    {{content}}
+                </div>
+            </div>
+
     </body>
 </html>

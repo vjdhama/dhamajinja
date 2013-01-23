@@ -28,9 +28,9 @@ class MainHandler(webapp2.RequestHandler):
         self.response.out.write(template.render())
 
     def post(self):    
-        r = self.request.get('rot')
-        a = self.request.get('ascii')
-        b = self.request.get('blog')
+        r = self.request.get('rot').strip()
+        a = self.request.get('ascii').strip()
+        b = self.request.get('blog').strip()
         #self.response.out.write("r = " + r + "AND a = " + a)
         
         if r == 'GO':
@@ -188,7 +188,7 @@ class SinglePost(webapp2.RequestHandler):
     def get(self, blog_id):
         s = Blog.get_by_id(int(blog_id))
         
-        self.render("permalink.html", subject = s.subject ,  content = s.content)
+        self.render("permalink.html", subject = s.subject ,  content = s.content, created = s.created)
 
 def escape_html(s):
         return cgi.escape(s,quote = True)
