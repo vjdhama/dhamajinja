@@ -171,8 +171,8 @@ class PostHandler(webapp2.RequestHandler):
             self.redirect("/blog/%d" %b_key.id())
             #self.render_front()
         else:
-            error = "We need both title and art"
-            self.render_post(title,art,error)
+            error = "We need both Subject and Content . . ."
+            self.render_post(subject,content,error)
 
 class SinglePost(webapp2.RequestHandler):
     def write(self, *a, **kw):

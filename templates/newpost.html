@@ -37,47 +37,40 @@
             margin-bottom: 30px;
             text-decoration: none;
         }
-        label{
-            display: block;
-            font-size : 20px;
-        }
-        input[type=text]{
-            width : 400px;
-            font-size : 20px;
-            padding : 2px;
-        }
-        textarea{
-            width : 400px;
-            height : 200px;
-            font-size : 17px;
-            font-family : monospace;
-        }
-        input [type=submit]{
-            font-family: "Helvetica", Helvetica, sans-serif;
-            font-weight: bold;
-            font-size: 24px;
-            text-decoration: none;
-            border-radius: 3px;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            padding: 8px 19px;
-        }
-        input:before, input:after {
-            height: 29px;
-            width: 1px;
-            content: '';
-            position: absolute;
-            margin-top: -5px;
-        }
-        input:before { margin-right: 19px; }
-        input:after { margin-left: 19px; }
-        @-moz-document url-prefix() { input:before { margin-left: -20px; } }
-        input:active:before, input:active:after { display: none; }
-
-        hr{
-            margin-top : 20px;    
-        }
-        .art + .art {
+        input, textarea { 
+            padding: 9px;
+            border: solid 1px #E5E5E5;
+            outline: 0;
+            font: normal 13px/100% Verdana, Tahoma, sans-serif;
+            width: 200px;
+            background: #FFFFFF url('bg_form.png') left top repeat-x;
+            background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+            background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+            box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+            -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+	}
+        textarea { 
+            width: 400px;
+            max-width: 600px;
+            height: 150px;
+            line-height: 150%;
+	}
+        input:hover, textarea:hover,
+        input:focus, textarea:focus { 
+            border-color: #3b5999; 
+            -webkit-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 8px;
+	}
+        .submit input {
+            width: auto;
+            padding: 9px 15px;
+            background: white;
+            border: 0;
+            font-size: 14px;
+            color: #3b5999;
+            border-radius: 5px;
+	}
+        .art{
             margin-top : 20px;
         }
         .art-title{
@@ -88,51 +81,13 @@
             margin : 0;
             font-size : 17px;
         }
-        .white {
-            color: #4A4A4A;
-            text-shadow: 0 1px 0 white;
-            background-color: #F1F1F1;
-            background-image: -moz-linear-gradient(100% 100% 90deg, #E0E0E0, #F6F6F6);
-            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F6F6F6), to(#E0E0E0));
-            border: 1px solid #B2B2B2;
-            border-top: 1px solid #C9C9C9;
-            border-bottom: 1px solid #8F8F8F;
-            -webkit-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            -moz-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
-        }
-        .white:after {
-            background-image: -moz-linear-gradient(100% 100% 90deg, #8F8F8F, #C9C9C9);
-            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C9C9C9), to(#8F8F8F));
-        }
-        .white:before {
-            background-image: -moz-linear-gradient(100% 100% 90deg, #8F8F8F, #C9C9C9);
-            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C9C9C9), to(#8F8F8F));
-        }
-        .white:hover {
-            -webkit-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            -moz-box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            box-shadow: 0 1px 0 #C0C0C0, 0 2px 0 #BFBFBF, 0 3px 0 #BBBBBB, 0 4px 0 #B0B0B0, 0 5px 9px rgba(0,0,0,0.3), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            color: black;
-        }
-        .white:active {
-            -webkit-box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            -moz-box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            box-shadow: 0 1px 0 #BBBBBB, 0 2px 0 #B0B0B0, 0 3px 5px rgba(0,0,0,0.25), inset 0 0 2px 1px rgba(255,255,255,0.9);
-            position: relative;
-            top: 2px;
-        }
-        .white.pressin:active {
-            background-image: -moz-linear-gradient(100% 100% 90deg, #F6F6F6, #E0E0E0);
-            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E0E0E0), to(#F6F6F6));
-        }
- 
     </style>
     <body>
         <a href="/blog" class = "main-title">
             CS 253 Blog
         </a>
         <h3>New Post</h3>
+        <!--
         <form method = "post">
             <label>
                 <div>Subject</div>
@@ -144,6 +99,24 @@
             </label>
             <div class = "error">{{error}}</div>
             <input class="white" type = "submit" value = "Submit">
+        </form>
+        -->
+        <form class="form" method = "post">
+
+            <p class="name">
+		<input type="text" name = "subject" id="name" placeholder = "Subject" value = "{{subject}}"/>
+            </p>
+
+            <p class="text">
+		<textarea name = "content" placeholder = "Content" value = "{{content}}"></textarea>
+            </p>
+            
+            <div class = "error">{{error}}</div>
+            
+            <p class="submit">
+		<input type="submit" value = "Submit" />
+            </p>
+
         </form>
     </body>
 </html>
