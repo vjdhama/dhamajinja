@@ -42,6 +42,28 @@ class MainHandler(webapp2.RequestHandler):
 
         
 class RotHandler(webapp2.RequestHandler):
+    def write(self, *a, **kw):
+        self.response.out.write(*a, **kw)
+        
+    def render_str(self, template, **params):
+        t = jinja_environment.get_template(template)
+        return t.render(params)
+
+    def render(self, template, **kw):
+        self.write(self.render_str(template, **kw))
+
+    def get(self):
+        self.render('rot_form.html')
+
+    def post(self):
+        rot13 = ''
+        text = self.request.get('t')
+        if text:
+            rot13 = text.encode('rot13')
+
+        self.render('rot_form.html', text = rot13)
+
+    '''
     def write(self,arg = ""):
         template_values = {
             'data': arg,
@@ -71,11 +93,13 @@ class RotHandler(webapp2.RequestHandler):
 
     def post(self):
         d = self.request.get('t')
-        if len(d) != 0:
+        if d:
             ans = self.rot13(d)
             self.write(ans)
         else:
             self.write()
+
+    ''' 
 
 class Art(db.Model):
     title = db.StringProperty(required = True)
@@ -111,9 +135,7 @@ class AsciiHandler(webapp2.RequestHandler):
             a = Art(title = title , art = art)
             a.put()
             
-            
             self.redirect("/ascii")
-            #self.render_front()
         else:
             error = "We need both title and art"
             self.render_front(title,art,error)
@@ -169,7 +191,6 @@ class PostHandler(webapp2.RequestHandler):
             b_key = b.put()
                         
             self.redirect("/blog/%d" %b_key.id())
-            #self.render_front()
         else:
             error = "We need both Subject and Content . . ."
             self.render_post(subject,content,error)
