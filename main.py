@@ -40,8 +40,8 @@ class MainHandler(webapp2.RequestHandler):
         elif b == 'GO':
             self.redirect('/blog')
 
-        
-class RotHandler(webapp2.RequestHandler):
+
+class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
         
@@ -51,7 +51,9 @@ class RotHandler(webapp2.RequestHandler):
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
-
+    
+     
+class RotHandler(Handler):
     def get(self):
         self.render('rot_form.html')
 
@@ -107,17 +109,7 @@ class Art(db.Model):
     created = db.DateTimeProperty(auto_now_add = True)
 
 
-class AsciiHandler(webapp2.RequestHandler):
-    def write(self, *a, **kw):
-        self.response.out.write(*a, **kw)
-        
-    def render_str(self, template, **params):
-        t = jinja_environment.get_template(template)
-        return t.render(params)
-
-    def render(self, template, **kw):
-        self.write(self.render_str(template, **kw))
-
+class AsciiHandler(Handler):
     def render_front(self,title = "",art = "",error = ""):
         arts = db.GqlQuery("SELECT * FROM Art "
                            "ORDER BY created DESC")
@@ -141,17 +133,7 @@ class AsciiHandler(webapp2.RequestHandler):
             self.render_front(title,art,error)
 
 
-class BlogHandler(webapp2.RequestHandler):
-    def write(self, *a, **kw):
-        self.response.out.write(*a, **kw)
-        
-    def render_str(self, template, **params):
-        t = jinja_environment.get_template(template)
-        return t.render(params)
-
-    def render(self, template, **kw):
-        self.write(self.render_str(template, **kw))
-
+class BlogHandler(Handler):
     def render_blog(self,title = "",art = "",error = ""):
         blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
 
@@ -165,17 +147,7 @@ class Blog(db.Model):
     content = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
 
-class PostHandler(webapp2.RequestHandler):
-    def write(self, *a, **kw):
-        self.response.out.write(*a, **kw)
-        
-    def render_str(self, template, **params):
-        t = jinja_environment.get_template(template)
-        return t.render(params)
-
-    def render(self, template, **kw):
-        self.write(self.render_str(template, **kw))
-    
+class PostHandler(Handler):
     def render_post(self,subject = "",content = "",error = ""):
         self.render("newpost.html", subject = subject, content = content, error = error)    
 
@@ -196,16 +168,6 @@ class PostHandler(webapp2.RequestHandler):
             self.render_post(subject,content,error)
 
 class SinglePost(webapp2.RequestHandler):
-    def write(self, *a, **kw):
-        self.response.out.write(*a, **kw)
-        
-    def render_str(self, template, **params):
-        t = jinja_environment.get_template(template)
-        return t.render(params)
-
-    def render(self, template, **kw):
-        self.write(self.render_str(template, **kw))
-
     def get(self, blog_id):
         s = Blog.get_by_id(int(blog_id))
         
