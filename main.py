@@ -59,49 +59,15 @@ class RotHandler(Handler):
 
     def post(self):
         rot13 = ''
-        text = self.request.get('t')
+        text = self.request.get('text')
         if text:
             rot13 = text.encode('rot13')
 
         self.render('rot_form.html', text = rot13)
 
-    '''
-    def write(self,arg = ""):
-        template_values = {
-            'data': arg,
-         }
-        template = jinja_environment.get_template('rot_form.html')
-        self.response.out.write(template.render(template_values))
-        
-    def rot13(self,s):
-        q = ''
-        for a in s:
-            if 123 > ord(a) > 96:
-                if (ord(a) + 13) > 122:
-                    q += chr(96 - 122 + (ord(a) + 13))
-                else:
-                    q += chr(ord(a) + 13)
-            elif 91 > ord(a) > 64:
-                if (ord(a) + 13) > 90:
-                    q += chr(64 - 90 + (ord(a) + 13))
-                else:
-                    q += chr(ord(a) + 13)
-            else:
-                q += a
-        return q
-    
+class SignupHandler(Handler):
     def get(self):
-        self.write()
-
-    def post(self):
-        d = self.request.get('t')
-        if d:
-            ans = self.rot13(d)
-            self.write(ans)
-        else:
-            self.write()
-
-    ''' 
+        self.render('signup.html')
 
 class Art(db.Model):
     title = db.StringProperty(required = True)
@@ -178,7 +144,8 @@ def escape_html(s):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/rot13',RotHandler),
+    ('/rot13', RotHandler),
+    ('/signup', SignupHandler),
     ('/ascii',AsciiHandler),
     ('/blog',BlogHandler),
     ('/blog/newpost',PostHandler),
