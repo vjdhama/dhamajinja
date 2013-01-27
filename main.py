@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os, cgi
+import os, cgi, re
 import webapp2
 import jinja2
 from google.appengine.ext import db
@@ -22,6 +22,17 @@ from google.appengine.ext import db
 jinja_environment = jinja2.Environment(autoescape=True,
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
 
+USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+USER_PD = re.compile(r"^.{3,20}$")
+USER_EM = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
+
+def valid_username(username):
+    return USER_RE.match(username)
+def valid_password(password):
+    return USER_PD.match(password)
+def valid_email(email):
+    return USER_EM.match(email)
+    
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('base.html')
@@ -39,6 +50,8 @@ class MainHandler(webapp2.RequestHandler):
             self.redirect('/ascii')
         elif b == 'GO':
             self.redirect('/blog')
+        else:
+            self.redirect('/')
 
 
 class Handler(webapp2.RequestHandler):
@@ -68,7 +81,32 @@ class RotHandler(Handler):
 class SignupHandler(Handler):
     def get(self):
         self.render('signup.html')
-
+    def post(self):
+        uerror = perror = vperror = mperror = eerror = ""
+        username = self.request.get("username")
+        password = self.request.get("password")
+        vpassword = self.request.get("vpassword")
+        email = self.request.get("email")
+        un = valid_username(username)
+        pd = valid_password(password)
+        vpd = valid_password(vpassword)
+        em = valid_email(email)
+        if un and pd and vpd and em:
+            self.response.out.write("Welcome " + username + "!")
+        else:
+            if not username:
+                uerror = 'Invalid Username'
+            if not password:
+                perror = 'Invalid Password'
+            if not vpassword:
+                vperror = 'Invalid Password'
+            if not email:
+                eerror = 'Invalid Email'
+            elif not password == vpassword:
+                mperror = 'Password don\'t match!!'
+            self.render('signup.html', uerror = uerror, perror = perror, vperror = vperror, mperror = mperror, eerror = eerror, username = username, email = email)
+            
+        
 class Art(db.Model):
     title = db.StringProperty(required = True)
     art = db.TextProperty(required = True)
