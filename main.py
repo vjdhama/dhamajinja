@@ -53,7 +53,6 @@ class MainHandler(webapp2.RequestHandler):
         else:
             self.redirect('/')
 
-
 class Handler(webapp2.RequestHandler):
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
@@ -77,35 +76,37 @@ class RotHandler(Handler):
             rot13 = text.encode('rot13')
 
         self.render('rot_form.html', text = rot13)
-
+        
 class SignupHandler(Handler):
     def get(self):
         self.render('signup.html')
     def post(self):
         uerror = perror = vperror = mperror = eerror = ""
+        error_flag= False
         username = self.request.get("username")
         password = self.request.get("password")
         vpassword = self.request.get("vpassword")
         email = self.request.get("email")
-        un = valid_username(username)
-        pd = valid_password(password)
-        vpd = valid_password(vpassword)
-        em = valid_email(email)
-        if un and pd and vpd and em:
-            self.response.out.write("Welcome " + username + "!")
-        else:
-            if not username:
-                uerror = 'Invalid Username'
-            if not password:
-                perror = 'Invalid Password'
-            if not vpassword:
-                vperror = 'Invalid Password'
-            if not email:
-                eerror = 'Invalid Email'
-            elif not password == vpassword:
-                mperror = 'Password don\'t match!!'
-            self.render('signup.html', uerror = uerror, perror = perror, vperror = vperror, mperror = mperror, eerror = eerror, username = username, email = email)
+        params = dict(username = username, email = email)
+        if not valid_username(username):
+            error_flag=True
+            params['uerror']="Invalid Username"
             
+        if not valid_password(password):
+            error_flag=True
+            params['perror']="Invalid Password"
+        elif password!=vpassword:
+            params['vperror']="Your password didn't match"
+            error_flag=True
+
+        if not valid_email(email):
+            error_flag=True
+            params['eerror']="Invalid e-mail address"
+        if error_flag:
+            self.render("signup.html",**params)           
+        else:
+            self.response.out.write("Welcome " + username + "!")
+
         
 class Art(db.Model):
     title = db.StringProperty(required = True)
