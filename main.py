@@ -85,7 +85,7 @@ class SignupHandler(Handler):
         error_flag= False
         username = self.request.get("username")
         password = self.request.get("password")
-        vpassword = self.request.get("vpassword")
+        verify = self.request.get("verify")
         email = self.request.get("email")
         params = dict(username = username, email = email)
         if not valid_username(username):
@@ -95,8 +95,8 @@ class SignupHandler(Handler):
         if not valid_password(password):
             error_flag=True
             params['perror']="Invalid Password"
-        elif password!=vpassword:
-            params['vperror']="Your password didn't match"
+        elif password!= verify:
+            params['mperror']="Your password didn't match"
             error_flag=True
 
         if not valid_email(email):
