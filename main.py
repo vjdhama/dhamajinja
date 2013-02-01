@@ -105,8 +105,15 @@ class SignupHandler(Handler):
         if error_flag:
             self.render("signup.html",**params)           
         else:
-            self.response.out.write("Welcome " + username + "!")
+            self.redirect('/welcome?username=' + username)
 
+class Welcome(Handler):
+    def get(self):
+        username = self.request.get('username')
+        if valid_username(username):
+            self.render('welcome.html', username = username)
+        else:
+            self.redirect('/signup')
         
 class Art(db.Model):
     title = db.StringProperty(required = True)
@@ -188,5 +195,6 @@ app = webapp2.WSGIApplication([
     ('/ascii',AsciiHandler),
     ('/blog',BlogHandler),
     ('/blog/newpost',PostHandler),
-    ('/blog/([0-9]*)',SinglePost)
+    ('/blog/([0-9]*)',SinglePost),
+    ('/welcome',Welcome)
 ], debug=True)

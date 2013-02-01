@@ -24,6 +24,10 @@
             -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
             -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
 	}
+    h2{
+            font-size : 20px;
+        }
+    
     input:hover, textarea:hover,
     input:focus, textarea:focus { 
             border-color: #3b5999; 
@@ -42,6 +46,7 @@
     <body>
         <div>
             <form class="form" method = "post">
+                <p>SIGNUP<p>
                 <p class="username">
                     <input type="text" name = "username" placeholder = "Username" value = "{{username}}"/>&nbsp;
                     <label class = "error">{{uerror}}</label>
