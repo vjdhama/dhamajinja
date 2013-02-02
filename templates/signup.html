@@ -24,8 +24,8 @@
             -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
             -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
 	}
-    h2{
-            font-size : 20px;
+    #top{
+            font-size : 24px;
         }
     
     input:hover, textarea:hover,
@@ -46,7 +46,7 @@
     <body>
         <div>
             <form class="form" method = "post">
-                <p>SIGNUP<p>
+                <p id = "top">SIGNUP<p>
                 <p class="username">
                     <input type="text" name = "username" placeholder = "Username" value = "{{username}}"/>&nbsp;
                     <label class = "error">{{uerror}}</label>

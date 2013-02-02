@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os, cgi, re
+import os, cgi, re, random, string, hashlib
 import webapp2
 import jinja2
 from google.appengine.ext import db
@@ -32,6 +32,18 @@ def valid_password(password):
     return USER_PD.match(password)
 def valid_email(email):
     return USER_EM.match(email)
+
+def make_salt():
+    return ''.join(random.choice(string.letters) for x in xrange(5))
+def make_pw_hash(name,pw,salt = None):
+    if not salt:
+        salt = make_salt()
+    h = hashlib.sha256(name + pw + salt).hexdigest()
+    return '%s,%s'%(h,salt)
+def valid_pw(name,pw,h):
+    salt = h.split(',')[1]
+    return h == make_pw_hash(name, pw, salt)
+    
     
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -105,7 +117,8 @@ class SignupHandler(Handler):
         if error_flag:
             self.render("signup.html",**params)           
         else:
-            self.redirect('/welcome?username=' + username)
+            self.response.headers.add_header('Set-Cookie', 'name=username; Path=/')
+            self.redirect('/welcome')
 
 class Welcome(Handler):
     def get(self):
@@ -113,7 +126,7 @@ class Welcome(Handler):
         if valid_username(username):
             self.render('welcome.html', username = username)
         else:
-            self.redirect('/signup')
+            self.redirect('/blog/signup')
         
 class Art(db.Model):
     title = db.StringProperty(required = True)
@@ -191,10 +204,10 @@ def escape_html(s):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/rot13', RotHandler),
-    ('/signup', SignupHandler),
     ('/ascii',AsciiHandler),
     ('/blog',BlogHandler),
     ('/blog/newpost',PostHandler),
     ('/blog/([0-9]*)',SinglePost),
+    ('/blog/signup', SignupHandler),
     ('/welcome',Welcome)
 ], debug=True)
