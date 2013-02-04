@@ -32,18 +32,7 @@ def valid_password(password):
     return USER_PD.match(password)
 def valid_email(email):
     return USER_EM.match(email)
-
-def make_salt():
-    return ''.join(random.choice(string.letters) for x in xrange(5))
-def make_pw_hash(name,pw,salt = None):
-    if not salt:
-        salt = make_salt()
-    h = hashlib.sha256(name + pw + salt).hexdigest()
-    return '%s,%s'%(h,salt)
-def valid_pw(name,pw,h):
-    salt = h.split(',')[1]
-    return h == make_pw_hash(name, pw, salt)
-    
+ 
     
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -54,7 +43,6 @@ class MainHandler(webapp2.RequestHandler):
         r = self.request.get('rot').strip()
         a = self.request.get('ascii').strip()
         b = self.request.get('blog').strip()
-        #self.response.out.write("r = " + r + "AND a = " + a)
         
         if r == 'GO':
             self.redirect('/rot13')
@@ -88,6 +76,28 @@ class RotHandler(Handler):
             rot13 = text.encode('rot13')
 
         self.render('rot_form.html', text = rot13)
+
+
+def make_salt():
+    return ''.join(random.choice(string.letters) for x in xrange(5))
+
+def make_pw_hash(name,pw,salt = None):
+    if not salt:
+        salt = make_salt()
+    h = hashlib.sha256(name + pw + salt).hexdigest()
+    return '%s,%s'%(h,salt)
+def valid_pw(name,pw,h):
+    salt = h.split(',')[1]
+    return h == make_pw_hash(name, pw, salt)
+def hash_str(s):
+    return hashlib.md5(s).hexdigest()
+def make_secure_val(s):
+    return "%s,%s" %(s, hash_str(s))
+
+class Registration(db.Model):
+    user = db.Stringproperty(required = True)
+    pasw = db.StringProperty(required = True)
+    email = db.EmailProperty()
         
 class SignupHandler(Handler):
     def get(self):
@@ -117,7 +127,12 @@ class SignupHandler(Handler):
         if error_flag:
             self.render("signup.html",**params)           
         else:
-            self.response.headers.add_header('Set-Cookie', 'name=username; Path=/')
+            pw = make_pw_hash(username, password , '')
+            R = Registration(user = username, pasw = password, email = email)
+            R.put()
+            user_id = str(R.key().id())
+            hashed_user_id = make_secure_val(user_id)
+            self.set_secure_cookie('user-id', username)
             self.redirect('/welcome')
 
 class Welcome(Handler):
@@ -197,9 +212,6 @@ class SinglePost(webapp2.RequestHandler):
         s = Blog.get_by_id(int(blog_id))
         
         self.render("permalink.html", subject = s.subject ,  content = s.content, created = s.created)
-
-def escape_html(s):
-        return cgi.escape(s,quote = True)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
