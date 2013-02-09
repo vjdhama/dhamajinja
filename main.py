@@ -64,7 +64,18 @@ class Handler(webapp2.RequestHandler):
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
     
-     
+    def set_secure_cookie(self, cname, cvalue):
+        str1 = str('Set-Cookie')
+        str2 = cname + '=' + make_secure_val(cvalue) + '; Path=/'
+        str2 = str(str2)
+        self.response.headers.add_header(str1, str2)
+    
+'''
+    def read_secure_cookie(self, cname):
+        val = check_secure_val(self.request.cookies.get(cname))
+        if val:
+            return val
+'''     
 class RotHandler(Handler):
     def get(self):
         self.render('rot_form.html')
@@ -76,7 +87,6 @@ class RotHandler(Handler):
             rot13 = text.encode('rot13')
 
         self.render('rot_form.html', text = rot13)
-
 
 def make_salt():
     return ''.join(random.choice(string.letters) for x in xrange(5))
@@ -95,9 +105,9 @@ def make_secure_val(s):
     return "%s,%s" %(s, hash_str(s))
 
 class Registration(db.Model):
-    user = db.Stringproperty(required = True)
+    user = db.StringProperty(required = True)
     pasw = db.StringProperty(required = True)
-    email = db.EmailProperty()
+    mail = db.EmailProperty(required = False)
         
 class SignupHandler(Handler):
     def get(self):
@@ -128,7 +138,7 @@ class SignupHandler(Handler):
             self.render("signup.html",**params)           
         else:
             pw = make_pw_hash(username, password , '')
-            R = Registration(user = username, pasw = password, email = email)
+            R = Registration(user = username, pasw = password, mail = email)
             R.put()
             user_id = str(R.key().id())
             hashed_user_id = make_secure_val(user_id)
@@ -148,11 +158,9 @@ class Art(db.Model):
     art = db.TextProperty(required = True)
     created = db.DateTimeProperty(auto_now_add = True)
 
-
 class AsciiHandler(Handler):
     def render_front(self,title = "",art = "",error = ""):
-        arts = db.GqlQuery("SELECT * FROM Art "
-                           "ORDER BY created DESC")
+        arts = db.GqlQuery("SELECT * FROM Art ORDER BY created DESC")
 
         self.render("ascii.html", title = title, art = art, error = error, arts = arts)
     
@@ -172,10 +180,10 @@ class AsciiHandler(Handler):
             error = "We need both title and art"
             self.render_front(title,art,error)
 
-
 class BlogHandler(Handler):
     def render_blog(self,title = "",art = "",error = ""):
         blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
+
 
         self.render("blogs.html", blogs = blogs)
     
@@ -207,10 +215,9 @@ class PostHandler(Handler):
             error = "We need both Subject and Content . . ."
             self.render_post(subject,content,error)
 
-class SinglePost(webapp2.RequestHandler):
+class SinglePost(Handler):
     def get(self, blog_id):
         s = Blog.get_by_id(int(blog_id))
-        
         self.render("permalink.html", subject = s.subject ,  content = s.content, created = s.created)
 
 app = webapp2.WSGIApplication([
