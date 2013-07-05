@@ -2,4 +2,6 @@ dhamajinja
 ==========
 
 This is my long streak with Google App Engine and Udacity.
-Rot 13 decipher among some apps.
+1. ROT13 decrypter
+2. ASCII art
+3. BLOG
